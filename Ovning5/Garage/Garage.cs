@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Ovning5
 {
-    public class Garage<T> : IGarage<T>, IEnumerable<T> where T : Vehicle
+    public class Garage<T> :  IEnumerable<T> where T : Vehicle //IGarage<T>,
     {
         private T[] vehicles;
 
@@ -21,12 +21,15 @@ namespace Ovning5
 
         public IEnumerator<T> GetEnumerator()
         {
-            throw new NotImplementedException();
+            foreach (var item in vehicles)
+            {
+                yield return item;
+            }
         }
 
         IEnumerator IEnumerable.GetEnumerator()
         {
-            throw new NotImplementedException();
+            return (IEnumerator)GetEnumerator();
         }
     }
 }

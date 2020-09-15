@@ -16,5 +16,6 @@ namespace Ovning5
             NrOfWheels = nrOfWheels;
             Color = color;
         }
+
     }
 }
