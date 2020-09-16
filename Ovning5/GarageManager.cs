@@ -14,15 +14,8 @@ namespace Ovning5
 
         public GarageManager()
         {
-
-            //ToDo fixa så att inte färre än SeedData()
-            //Se AskForInt AskForString
-
-            int input = Util.AskForInt("This is a garage application.Enter how many vehicles the garage should have capacity for", ui);
-
-            if (input < 6)
-
-                garageHandler = new GarageHandler(nrOfVehicles);
+            nrOfVehicles = Util.AskForPositiveInt("This is a garage application. Enter how many vehicles the garage should have capacity for", ui);
+            garageHandler = new GarageHandler(nrOfVehicles);
         }
 
         public void PrintMenu()
@@ -33,7 +26,8 @@ namespace Ovning5
                 "\n3. Print vehicle types and how many of each there are in the garage" +
                 "\n4. Park a vehicle " +
                 "\n5. Pick up a vehicle" +
-                "\n6. Find a vehicle with a given registration number");
+                "\n6. Find a vehicle with a given registration number" +
+                "\nQ. Quit application");
 
             do
             {
@@ -43,13 +37,16 @@ namespace Ovning5
                         SeedData();
                         break;
                     case "2":
-                        garageHandler.PrintAll();
+                        ui.Print(garageHandler.PrintAll()); //ToDo fixa kanske så att gör i ett svep när kallar garageHandler.PrintAll()
                         break;
                     case "3":
                         PrintVehicleTypes();
                         break;
                     case "4":
                         Park();
+                        break;
+                    case "5":
+                        PickUp();
                         break;
                     case "Q":
                         Environment.Exit(0);
@@ -64,23 +61,32 @@ namespace Ovning5
 
         }
 
+        private void PickUp()
+        {
+            throw new NotImplementedException();
+        }
+
         private void PrintVehicleTypes()
         {
             var result = garageHandler.GetVehicleTypes();
             ui.Print(result);
         }
 
-        private bool Park()
+        private void Park()
         {
             ui.Print("Enter which type of vehicle you want to park \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
             string vehicleType = ui.GetInput();
             ui.Print("Enter the three required vehicle data");
             string regNr = Util.AskForString("Registration number: ", ui);
-            int nrOfWheels = Util.AskForInt("Number of wheels: ", ui);
+            int nrOfWheels = Util.AskForPositiveInt("Number of wheels: ", ui);
             string color = Util.AskForAlphabets("Color: ", ui);        //ToDo fixa så att som color ej kan ange siffror
 
             string fuelType;
             int nrOfSeats;
+            double length;
+            double cylinderVolume;
+            double wingSpan;
+            IVehicle vehicle;
             switch (vehicleType)
             {
                 case "1":
@@ -103,25 +109,31 @@ namespace Ovning5
                             ui.Print("Enter a valid fuel type");
                     } while (true);
 
-
-                    //IVehicle vehicle = new Car();
-
+                     vehicle = new Car(regNr, nrOfWheels, color, fuelType);
+                    if (garageHandler.Add(vehicle))                                         //
+                        ui.Print($"The {vehicle.GetType().Name} was parked successfully"); // ta bort härifrån och lägg in gemensamt nedanför
+                    else
+                        ui.Print($"The {vehicle.GetType().Name} could not be parked. The garage is full");
                     break;
-
                 case "2":
-                    do
-                    {
-                        int input2 = Util.AskForInt("Enter how many seats the bus should have", ui);      //ToDo begränsa så att ej minus eller 0 och max 30
-                        if (input2 < 1)
-                            ui.Print("The bus must at least have 1 seat");
-                        else if (input2 > 60)
-                            ui.Print("The bus cannot have more than 60 seats");
-                        else
-                            nrOfSeats = input2;
-                        break;
-
-                    } while (true);
-
+                    nrOfSeats = Util.AskForPositiveInt("Enter how many seats the bus have", ui);
+                    vehicle = new Bus(regNr, nrOfWheels, color, nrOfSeats);
+                    if (garageHandler.Add(vehicle))
+                        ui.Print("The bus was parked successfully");
+                    break;
+                case "3":
+                    length = Util.AskForPositiveDouble("Enter the length of the boat", ui);
+                    IVehicle boat = new Boat(regNr, nrOfWheels, color, length);
+                    if (garageHandler.Add(boat))
+                        ui.Print("The boat was parked successfully");
+                    break;
+                case "4":
+                    cylinderVolume = Util.AskForPositiveDouble("Enter the cylinder volume of the motorcycle", ui);
+                    vehicle = new Motorcycle(regNr, nrOfWheels, color, cylinderVolume);
+                    break;
+                case "5":
+                    wingSpan = Util.AskForPositiveDouble("Enter the wing span of the airplane", ui);
+                    vehicle = new Airplane(regNr, nrOfWheels, color, wingSpan);
                     break;
                 default:
                     Console.WriteLine("Wrong choice, try again");
@@ -131,7 +143,15 @@ namespace Ovning5
 
 
 
-            return true; //ToDo om alla data given och en vehicle skapad samt placerat då success
+            //ToDo skriv gemensamt oavsett vilken vehicle som parkerats istället för efter varje case
+            //Och om ej lyckats då säg att garaget är fullt eller om det redan finns ett fordon med det RegNumret
+            /*
+           if (garageHandler.Add(vehicle))
+               ui.Print($"The {vehicle.GetType().Name} was parked successfully");
+           else
+               ui.Print($"The {vehicle.GetType().Name} could not be parked. The garage is full");
+                  
+           */
 
             //garageHandler.Add()
             //Success eller Fail

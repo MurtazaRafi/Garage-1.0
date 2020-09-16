@@ -38,21 +38,40 @@ namespace Ovning5
 
 
         // ??
-        public void Add(T vehicle)
+        public bool Add(T vehicle)
         {
             //Boolskt returvärde?
             //Titta om garaget är fullt?
             //Är vehicle null?
+            bool success = false;
+
+            if (vehicles.Last() != null)
+                return false;
             for (int i = 0; i < vehicles.Length; i++)
             {
-                if(vehicles[i] == null)
+                if (vehicles[i] == null)
+                {
                     vehicles[i] = vehicle;
+                    success = true;
+                    break;
+                }
             }
+            return success;
         }
 
-        public void Remove(T vehicle)
+        public bool Remove(T vehicle)
         {
-            // vehicles[i] = null;
+            bool succcess = false;
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                if (vehicles[i].RegNr == "abc123")      //ToDo ändra så att det reg nr som inputar ska tas bort
+                {
+                    vehicles[i] = null;     // ?? Hur fixa så att kan sätta lika med null ??
+                    succcess = true;
+                    break;
+                }
+            }
+            return succcess;
         }
 
 
