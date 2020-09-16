@@ -6,7 +6,7 @@ using System.Text;
 
 namespace Ovning5
 {
-    public class Garage<T> :  IEnumerable<T> where T : Vehicle //IGarage<T>,
+    public class Garage<T> :  IEnumerable<T> where T : IVehicle //IGarage<T>,
     {
         private T[] vehicles;
 
@@ -40,12 +40,13 @@ namespace Ovning5
         // ??
         public void Add(T vehicle)
         {
+            //Boolskt returvärde?
+            //Titta om garaget är fullt?
+            //Är vehicle null?
             for (int i = 0; i < vehicles.Length; i++)
             {
-                if(vehicles[i] != null)
-                {
+                if(vehicles[i] == null)
                     vehicles[i] = vehicle;
-                }
             }
         }
 

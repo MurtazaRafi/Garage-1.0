@@ -8,37 +8,45 @@ namespace Ovning5
 {
     public class GarageHandler
     {
-        public Garage<Vehicle> vehicles; 
-        public int NrOfVehicles { get; set; }
+        private Garage<IVehicle> garage;
+        public int NrOfVehicles { get; set; }       // Gr till privat?
         public GarageHandler(int nrOfVehicles)
         {
             NrOfVehicles = nrOfVehicles;
-          vehicles = new Garage<Vehicle>(NrOfVehicles);
+            garage = new Garage<IVehicle>(NrOfVehicles);
         }
 
-            
-      
+
+
 
         // 
-        public void PrintAll()
+        public string PrintAll()
         {
-            
-            foreach (var v in vehicles)
+            var builder = new StringBuilder();
+
+            foreach (var v in garage)
             {
                 //if (v != null)
-                    Console.WriteLine($"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}");
+                builder.AppendLine($"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}");
             }
+            return builder.ToString();
         }
 
-        public void PrintVehicleType()
+        public string GetVehicleTypes()
         {
-            foreach (var v in vehicles)
+            var builder = new StringBuilder();
+            foreach (var v in garage)
             {
-                Console.WriteLine($"Vehicle type: {v.GetType().Name} Count: {v.GetType()}");
+               
+                builder.AppendLine($"Vehicle type: {v.GetType().Name} Count: {v.GetType()}");
             }
+            return builder.ToString();
         }
 
+        internal void Add(IVehicle vehicle)
+        {
 
-
+             garage.Add(vehicle);
+        }
     }
 }

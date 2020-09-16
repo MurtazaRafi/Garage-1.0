@@ -11,9 +11,11 @@ namespace Ovning5
             Console.WriteLine(message);
         }
 
-        internal string Read()
+        internal string GetInput()
         {
             return Console.ReadLine();
         }
+
+        
     }
 }
