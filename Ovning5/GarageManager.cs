@@ -89,8 +89,6 @@ namespace Ovning5
         {
             var result = garageHandler.GetVehicleTypes();
             ui.Print(result);
-            ui.Print("");
-
         }
 
         private void Park()

@@ -2,13 +2,17 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
+
+[assembly: InternalsVisibleTo("Garage.Test")] 
+//ToDo fixa så att refererar
 
 namespace Ovning5
 {
     public class Garage<T> : IEnumerable<T> where T : IVehicle //IGarage<T>,
     {
-        public T[] vehicles;       //ToDo GÖR OM TILL PRIVAT
+        private T[] vehicles;
 
         public Garage(int nrOfVehicles)
         {
@@ -16,7 +20,7 @@ namespace Ovning5
         }
         internal T this[int index]
         {
-            get => vehicles [index];
+            get => vehicles[index];
             set { vehicles[index] = value; }
         }
 
@@ -87,7 +91,7 @@ namespace Ovning5
 
         internal T GetVehicleByRegNr(string regNr)
         {
-            
+
             for (int i = 0; i < vehicles.Length; i++)
             {
                 if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
@@ -98,21 +102,20 @@ namespace Ovning5
 
             return default(T);
         }
-        internal void GroupByType()
+        internal string GroupByType()
         {
-            // Remove null vehicles
-            
-            var results = vehicles.GroupBy(v => v?.GetType().Name, v => v?.GetType().Name.Length, 
-                (Key, NrOfTypes) => new { Key = Key?.ToString() , Count = NrOfTypes?.Count()}); 
-            
-            //ToDo FIxa så att ej ger nullrefernce exception om alla positioner i arrayen ej fylld 
+            var builder = new StringBuilder();
+
+            var results = vehicles.GroupBy(v => v?.GetType().Name, v => v?.GetType().Name.Length,
+                (Key, NrOfTypes) => new { Key = Key?.ToString(), Count = NrOfTypes?.Count() });
 
             foreach (var item in results)
             {
-               
-                Console.WriteLine(item.Key);
-                Console.WriteLine(item.Count);
+                if (item.Key != null)
+                    builder.AppendLine($"Vehicle type: {item.Key}  Count: {item.Count}");
             }
+
+            return builder.ToString();
         }
     }
 }
