@@ -6,9 +6,9 @@ namespace Ovning5
 {
     public abstract class Vehicle : IVehicle
     {
-        public string RegNr { get; set; } //ToDo fixa så att kan ej sätta vilket som helst värde
-        public int NrOfWheels { get; set; } //ToDo fixa så att kan ej sätta vilket som helst värde
-        public string Color { get; set; } //ToDo fixa så att kan ej sätta vilket som helst värde
+        public string RegNr { get; set; }   
+        public int NrOfWheels { get; set; } 
+        public string Color { get; set; }   
 
         public Vehicle(string regNr, int nrOfWheels, string color)
         {

@@ -6,28 +6,27 @@ using System.Text;
 
 namespace Ovning5
 {
-    public class Garage<T> :  IEnumerable<T> where T : IVehicle //IGarage<T>,
+    public class Garage<T> : IEnumerable<T> where T : IVehicle //IGarage<T>,
     {
-        private T[] vehicles;
+        public T[] vehicles;       //ToDo GÖR OM TILL PRIVAT
 
         public Garage(int nrOfVehicles)
         {
             vehicles = new T[nrOfVehicles];
         }
-        public T this[int index]
+        internal T this[int index]
         {
-            get => vehicles[index];
-            set { vehicles[index] = value; } //ToDo kolla så att ej skickar index out of bounds
+            get => vehicles [index];
+            set { vehicles[index] = value; }
         }
 
 
-        // Kommer köra över hela arrayen, även null. Bör fixas, hur?
         public IEnumerator<T> GetEnumerator()
         {
             foreach (var item in vehicles)
             {
-                if(item!=null)
-                yield return item;
+                if (item != null)
+                    yield return item;
             }
         }
 
@@ -47,6 +46,7 @@ namespace Ovning5
 
             if (vehicles.Last() != null)
                 return false;
+
             for (int i = 0; i < vehicles.Length; i++)
             {
                 if (vehicles[i] == null)
@@ -59,14 +59,25 @@ namespace Ovning5
             return success;
         }
 
-        public bool Remove(T vehicle)
+        internal bool UniqueRegNr(string regNr)
+        {
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
+                    return false;
+            }
+            return true;
+        }
+
+        //public bool Remove(T vehicle)
+        public bool Remove(string regNr)
         {
             bool succcess = false;
             for (int i = 0; i < vehicles.Length; i++)
             {
-                if (vehicles[i].RegNr == "abc123")      //ToDo ändra så att det reg nr som inputar ska tas bort
+                if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
                 {
-                    vehicles[i] = null;     // ?? Hur fixa så att kan sätta lika med null ??
+                    vehicles[i] = default(T);
                     succcess = true;
                     break;
                 }
@@ -74,6 +85,34 @@ namespace Ovning5
             return succcess;
         }
 
+        internal T GetVehicleByRegNr(string regNr)
+        {
+            
+            for (int i = 0; i < vehicles.Length; i++)
+            {
+                if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
+                {
+                    return vehicles[i];
+                }
+            }
 
+            return default(T);
+        }
+        internal void GroupByType()
+        {
+            // Remove null vehicles
+            
+            var results = vehicles.GroupBy(v => v?.GetType().Name, v => v?.GetType().Name.Length, 
+                (Key, NrOfTypes) => new { Key = Key?.ToString() , Count = NrOfTypes?.Count()}); 
+            
+            //ToDo FIxa så att ej ger nullrefernce exception om alla positioner i arrayen ej fylld 
+
+            foreach (var item in results)
+            {
+               
+                Console.WriteLine(item.Key);
+                Console.WriteLine(item.Count);
+            }
+        }
     }
 }

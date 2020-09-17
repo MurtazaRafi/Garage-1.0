@@ -1,5 +1,5 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Ovning5.Vehicles;      //ToDo Hur göra så att hittar Ovning5 garage
+using Ovning5.Vehicles;      //ToDo TEST Hur göra så att hittar Ovning5 garage
 
 namespace Garage.Test
 {
@@ -7,9 +7,13 @@ namespace Garage.Test
     public class UnitTest1
     {
         [TestMethod]
-        public void AddCar_Should_Add()
+        public void AddCar_Should_AddToTheArray()
         {
-            // var vehicle = new Car();
+            string regNr = "ABc124";
+            int nrOfWheels = 4;
+            string color = "Red";
+            string fueltype = "Gasoline";
+            var vehicle = new Car(regNr, nrOfWheels, color, fueltype);
         }
     }
 }

@@ -18,21 +18,19 @@ namespace Ovning5
                 ui.Print(prompt);           //?? För att kunna använda här ??
                 answer = ui.GetInput();
 
-                //If answer is not null or empty string
                 if (!string.IsNullOrEmpty(answer))
                 {
-                    //Set bool success to true to exit loop
                     success = true;
                 }
 
-            } while (!success); //until we have get a correct value
+            } while (!success); 
 
-            return answer; //return value
+            return answer; 
         }
 
       
 
-        internal static string AskForAlphabets(string prompt, UI ui) //ToDo Gör om UI till IUI
+        internal static string AskForAlphabets(string prompt, UI ui) 
         {
             bool success = false;
             string answer;
@@ -42,57 +40,52 @@ namespace Ovning5
                 ui.Print(prompt);
                 answer = ui.GetInput();
 
-                //If answer is not null or empty string and only alphabets
                 if (!string.IsNullOrEmpty(answer) && Regex.IsMatch(answer, @"^[a-zA-Z]+$"))
                 {
-                    //Set bool success to true to exit loop
+                    
                     success = true;
                 }
 
-            } while (!success); //until we have get a correct value
+            } while (!success); 
 
-            return answer; //return value
+            return answer; 
         }
 
-        internal static int AskForPositiveInt(string prompt, UI ui) //ToDo Gör om UI till IUI
+        internal static int AskForPositiveInt(string prompt, UI ui) 
         {
             bool success = false;
             int answer;
 
             do
             {
-                //Try to parse string to int returns bool
-                //If true exit loop
+                
                 string input = AskForString(prompt, ui);
 
                 success = int.TryParse(input, out answer);
                 if (!success || answer < 0)
-                    ui.Print("You must give a postive integer"); //Write error message
+                    ui.Print("You must give a postive integer"); 
 
-            } while (!success || answer < 1);
+            } while (!success || answer < 0);
 
-            //Returns parsed string
             return answer;
         }
 
-        internal static double AskForPositiveDouble(string prompt, UI ui) //ToDo Gör om UI till IUI
+        internal static double AskForPositiveDouble(string prompt, UI ui)
         {
             bool success = false;
             double answer;
 
             do
             {
-                //Try to parse string to int returns bool
-                //If true exit loop
+                
                 string input = AskForString(prompt, ui);
 
                 success = double.TryParse(input, out answer);
-                if (!success || answer < 0)
-                    ui.Print("You must give a postive decimal number"); //Write error message
+                if (!success || answer <= 0)
+                    ui.Print("You must give a postive decimal number"); 
 
-            } while (!success || answer < 1);
+            } while (!success || answer <= 0);
 
-            //Returns parsed string
             return answer;
         }
     }

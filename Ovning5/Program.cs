@@ -9,8 +9,12 @@ namespace Ovning5
         static void Main(string[] args)
         {
 
-            GarageManager ui = new GarageManager();
-            ui.PrintMenu();
+            //GarageHandler gH = new GarageHandler(10);
+            //gH.TestingSettingOutOfBounds();
+
+            GarageManager gM = new GarageManager();
+            gM.PrintMenu();
+
 
 
             //string[] arr = new string[5];
@@ -20,8 +24,25 @@ namespace Ovning5
             //var car2 = vehicles[1];
 
 
+            // Linq inspiration
+            /* list.ForEach(m => action?.Invoke(m));
 
-            
+            var startsWithA = employees
+              .Where(e => e.Name.StartsWith("S"))
+              .Where(e => e.Name.EndsWith("a"))
+              .Select(e => e.Salary)
+              .Sum();
+
+            var namesLength = employees
+                .Where(e => e.Salary > 11000)
+                .Select(e => new EmpDto
+                {
+                    Name = e.Name.ToUpper(),
+                    NamesLength = e.Name.Length
+                })
+                .ToArray();
+            */
+
             Console.ReadKey();
         }
 
