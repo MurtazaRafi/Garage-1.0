@@ -11,6 +11,9 @@ namespace Ovning5
     public class GarageHandler
     {
         public Garage<IVehicle> garage;     // ej privat pga kunna köra tester
+
+        // public Garage<IVehicle> result = new Garage<IVehicle>(10);      // För att kunna lägga till från filtren
+
         private int NrOfVehicles { get; set; }
         public GarageHandler(int nrOfVehicles)
         {
@@ -93,35 +96,43 @@ namespace Ovning5
             return veh.ToString();
         }
 
-        public Garage<IVehicle> FilterList(Garage<IVehicle> array, string propName, Predicate<object> filterMethod)
+        public Garage<IVehicle> FilterArray()
         {
-
+            string vehicleType = "Bus";
+            string colorInput = "Red";
             Garage<IVehicle> result = new Garage<IVehicle>(10);
-            //var result = new List<object>();
-            foreach (var item in array)
+            Predicate<object> filterMethod = color => (string)color == colorInput;
+            foreach (var item in garage)
             {
-                var value = item.GetType().GetProperty(propName).GetValue(item);
-                if (filterMethod(value))
-                {
+                Predicate<object> filterMethod2 = nrOfWheel => (int)nrOfWheel == 8;
+                object value = null ;
+                object value2 = null;                   //ToDo göra för varje vehicle get type
+                
+                
+
+                value = item.GetType().GetProperty("Color").GetValue(item);
+                value2 = item.GetType().GetProperty("NrOfWheels").GetValue(item);
+                if (filterMethod(value) && filterMethod2(value2) && item.GetType().Name == vehicleType)
                     result.Add(item);
-                }
             }
             
             return result;
 
         }
 
-        public void PrintResultsFromArray()
+        public void PrintResultsFromArray(string colorInput)
         {
            
-            var result = FilterList(garage, "Color", color => (string)color == "Red");
-            foreach (var item in result)
-            {
-                //var vehicle = item as IVehicle;
-                Console.WriteLine(item.Color);            // Vfr ser inte item.Age??
-            }
+            var result = FilterArray();
 
-            Console.ReadKey();
+            if (result[0] == null)
+                Console.WriteLine("Empty");         //ToDo ta bort console.writeline
+            else
+            {
+                foreach (var item in result)
+                    Console.WriteLine($"{item.GetType().Name} {item.Color}");
+
+            }
         }
     }
 }

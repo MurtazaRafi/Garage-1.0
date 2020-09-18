@@ -67,22 +67,22 @@ namespace Ovning5
 
         private void FindVehicle()
         {
+            ui.Print("In order to find the vehicle in the garage you must speify som characteristics of it.");
+            string choice = Util.AskForString("Give the vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane", ui);
             string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui);
             int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
-            ui.Print(garageHandler.FindVehicle(color, nrOfWheels));
 
-            garageHandler.PrintResultsFromArray();
-            /*string choice = Util.AskForString("Vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
+            garageHandler.PrintResultsFromArray(color);
             IVehicle vehicleType = null;
             switch (choice)
             {
-                case 1:
-                    vehicleType = new Car();
+                case "1":
+                    //vehicleType = new Car();
                     break;
                 default:
                     break;
             }
-            */
+            
 
         }
 
@@ -105,7 +105,7 @@ namespace Ovning5
                 ui.Print("There are no vehicles in the garage");
             else
                 ui.Print(garageHandler.PrintAll());
-            ui.Print("");
+         
         }
 
         private void PickUp()
