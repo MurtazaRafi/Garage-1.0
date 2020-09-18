@@ -89,50 +89,59 @@ namespace Ovning5
             
         }
 
-        //ToDo fixa Sista funktionaliteten
-        internal string FindVehicle(string color, int nrOfWheels)
+       
+        public string FilterArray(string vehicleType, string color, int nrOfWheels)
         {
-            var veh = garage.Where(v => v.Color == color).Select(v => v.GetType().Name); //ToDo Fixa så att kan välja
-            return veh.ToString();
-        }
-
-        public Garage<IVehicle> FilterArray()
-        {
-            string vehicleType = "Bus";
-            string colorInput = "Red";
-            Garage<IVehicle> result = new Garage<IVehicle>(10);
-            Predicate<object> filterMethod = color => (string)color == colorInput;
-            foreach (var item in garage)
+            StringBuilder builder = new StringBuilder();
+            var resultat = garage.Where(v=> v.GetType().Name.ToLower() == vehicleType)
+                .Where(v => v.Color.ToLower() == color)
+                .Where(v => v.NrOfWheels == nrOfWheels);
+            foreach (var item in resultat)
             {
-                Predicate<object> filterMethod2 = nrOfWheel => (int)nrOfWheel == 8;
-                object value = null ;
-                object value2 = null;                   //ToDo göra för varje vehicle get type
-                
-                
-
-                value = item.GetType().GetProperty("Color").GetValue(item);
-                value2 = item.GetType().GetProperty("NrOfWheels").GetValue(item);
-                if (filterMethod(value) && filterMethod2(value2) && item.GetType().Name == vehicleType)
-                    result.Add(item);
+                builder.AppendLine($"Vehicle type: {item.GetType().Name} Ristration Number: {item.RegNr} " +
+                    $"Color: {item.Color} Number of wheels: {item.NrOfWheels}");
             }
+            return builder.ToString();
+
+            //string vehicleType = "Bus";
+            //string colorInput = "Red";
+            //Garage<IVehicle> result = new Garage<IVehicle>(10);
+            //Predicate<object> filterMethod = color => (string)color == colorInput;
+            //foreach (var item in garage)
+            //{
+            //    Predicate<object> filterMethod2 = nrOfWheel => (int)nrOfWheel == 8;
+            //    object value = null ;
+            //    object value2 = null;
+
+             //ToDo Klura ut så att ej behöver skriva 6 olika varjanter av if om kör denna metod
+            //    value = item.GetType().GetProperty("Color").GetValue(item);
+            //    value2 = item.GetType().GetProperty("NrOfWheels").GetValue(item);
+
+            //    Console.WriteLine(filterMethod(value));
+
+            //    if (filterMethod(value) && filterMethod2(value2) && item.GetType().Name == vehicleType)
+            //        result.Add(item);
+            //    else if (filterMethod(value) && filterMethod2(value2))
+            //        result.Add(item);
+            //}
             
-            return result;
+            //return result;
 
         }
 
-        public void PrintResultsFromArray(string colorInput)
-        {
+        //public void PrintResultsFromArray(string colorInput)
+        //{
            
-            var result = FilterArray();
+        //    var result = FilterArray();
 
-            if (result[0] == null)
-                Console.WriteLine("Empty");         //ToDo ta bort console.writeline
-            else
-            {
-                foreach (var item in result)
-                    Console.WriteLine($"{item.GetType().Name} {item.Color}");
+        //    if (result[0] == null)
+        //        Console.WriteLine("Empty");         //ToDo ta bort console.writeline
+        //    else
+        //    {
+        //        foreach (var item in result)
+        //            Console.WriteLine($"{item.GetType().Name} {item.Color}");
 
-            }
-        }
+        //    }
+        //}
     }
 }

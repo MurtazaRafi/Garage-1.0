@@ -58,7 +58,7 @@ namespace Ovning5
                         Environment.Exit(0);
                         break;
                     default:
-                        Console.WriteLine("Wrong choice, try again");
+                        ui.Print("Wrong choice, try again");
                         break;
                 };
 
@@ -67,22 +67,46 @@ namespace Ovning5
 
         private void FindVehicle()
         {
-            ui.Print("In order to find the vehicle in the garage you must speify som characteristics of it.");
-            string choice = Util.AskForString("Give the vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane", ui);
-            string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui);
-            int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
-
-            garageHandler.PrintResultsFromArray(color);
-            IVehicle vehicleType = null;
-            switch (choice)
+            ui.Print("In order to find the vehicle in the garage you must specify some characteristics of it.");
+            int choice = 0;
+            string vehicleType = "";
+            do
             {
-                case "1":
-                    //vehicleType = new Car();
-                    break;
-                default:
-                    break;
-            }
-            
+                choice = Util.AskForPositiveInt("Give the vehicle type: \n1. Car \n2." +
+                    " Bus \n3. Boat \n4. Motorcycle \n5. Airplane \n6 don't know", ui);
+
+                switch (choice)
+                {
+                    case 1:
+                        vehicleType = "Car";
+                        break;
+                    case 2:
+                        vehicleType = "Bus";
+                        break;
+                    case 3:
+                        vehicleType = "Boat";
+                        break;
+                    case 4:
+                        vehicleType = "Motorcycle";
+                        break;
+                    case 5:
+                        vehicleType = "Airplane";
+                        break;
+                    case 6:
+                        vehicleType = "none";
+                        break;
+                    default:
+                        ui.Print("Wrong choice!");
+                        break;
+                }
+            } while (choice<1 || choice>6);
+
+            //ToDo fixa så att har två val om 1 vet color eller 2 ej
+            string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui).Trim().ToLower();
+            //fixa så att har två 1. 2. val om vet antal hjul eller ej
+
+            int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
+            ui.Print(garageHandler.FilterArray(vehicleType, color, nrOfWheels));
 
         }
 
@@ -105,7 +129,7 @@ namespace Ovning5
                 ui.Print("There are no vehicles in the garage");
             else
                 ui.Print(garageHandler.PrintAll());
-         
+
         }
 
         private void PickUp()
