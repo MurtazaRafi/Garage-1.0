@@ -8,14 +8,14 @@ namespace Ovning5
 {
     public class Garage<T> : IEnumerable<T> where T : IVehicle //IGarage<T>,
     {
-        private T[] vehicles;     
+        private T[] vehicles;
         public Garage(int nrOfVehicles)
         {
             vehicles = new T[nrOfVehicles];
         }
         internal T this[int index]
         {
-            get => vehicles [index];
+            get => vehicles[index];
             set { vehicles[index] = value; }
         }
 
@@ -38,7 +38,7 @@ namespace Ovning5
         // ??
         public bool Add(T vehicle)
         {
-           
+
             bool success = false;
 
             if (vehicles.Last() != null)
@@ -90,7 +90,7 @@ namespace Ovning5
 
         internal T GetVehicleByRegNr(string regNr)
         {
-            
+
             for (int i = 0; i < vehicles.Length; i++)
             {
                 if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
@@ -100,21 +100,6 @@ namespace Ovning5
             }
 
             return default(T);
-        }
-        internal string GroupByType()
-        {
-            var builder = new StringBuilder();
-
-            var results = vehicles.GroupBy(v => v?.GetType().Name, v => v?.GetType().Name.Length,
-                (Types, NrOfTypes) => new { TypeOfVehicle = Types?.ToString(), Count = NrOfTypes?.Count() });
-
-            foreach (var item in results)
-            {
-                if (item.TypeOfVehicle != null)
-                    builder.AppendLine($"Vehicle type: {item.TypeOfVehicle}  Count: {item.Count}");
-            }
-
-            return builder.ToString();
         }
     }
 }

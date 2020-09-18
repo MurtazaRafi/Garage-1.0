@@ -18,7 +18,7 @@ namespace Ovning5
             garage = new Garage<IVehicle>(NrOfVehicles);
         }
 
-        // 
+        
         public string PrintAll()
         {
             var builder = new StringBuilder();
@@ -31,7 +31,18 @@ namespace Ovning5
 
         public string GetVehicleTypes()
         {
-            return garage.GroupByType();
+            var builder = new StringBuilder();
+
+            var results = garage.GroupBy(v => v?.GetType().Name,
+                (Types, NrOfTypes) => new { TypeOfVehicle = Types?.ToString(), Count = NrOfTypes?.Count() });
+
+            foreach (var item in results)
+            {
+                if (item.TypeOfVehicle != null)
+                    builder.AppendLine($"Vehicle type: {item.TypeOfVehicle}  Count: {item.Count}");
+            }
+
+            return builder.ToString();
         }
 
         // Kallar i två svep för att garage är private (incapsualtion)
@@ -57,6 +68,8 @@ namespace Ovning5
         internal string GetVehicleByRegNr(string regNr)
         {
             IVehicle v = garage.GetVehicleByRegNr(regNr);
+
+           
             string message = "A vehicle with that registration number does not exist in the garage";
             if(v != null)
             return $"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}";
