@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Ovning5.Vehicles;
 
@@ -9,43 +11,50 @@ namespace Ovning5
         static void Main(string[] args)
         {
 
-            //GarageHandler gH = new GarageHandler(10);
-            //gH.TestingSettingOutOfBounds();
-
+ 
             GarageManager gM = new GarageManager();
             gM.PrintMenu();
 
+            List<Person> list = new List<Person>(4);
+            Person person1 = new Person(18);
+            list.Add(person1);
+            Person person2 = new Person(15);
+            list.Add(person2);
+            Person person3 = new Person(25);
+            list.Add(person3);
+            Person person4 = new Person(27);
+            list.Add(person4);
 
-
-            //string[] arr = new string[5];
-            //arr.Append("A"); Kan köra extension metod om vill annars ger ny kopia
-
-            // Ifall har bara getter och ej setter kan bara hämta värdet såhär
-            //var car2 = vehicles[1];
-
-
-            // Linq inspiration
-            /* list.ForEach(m => action?.Invoke(m));
-
-            var startsWithA = employees
-              .Where(e => e.Name.StartsWith("S"))
-              .Where(e => e.Name.EndsWith("a"))
-              .Select(e => e.Salary)
-              .Sum();
-
-            var namesLength = employees
-                .Where(e => e.Salary > 11000)
-                .Select(e => new EmpDto
-                {
-                    Name = e.Name.ToUpper(),
-                    NamesLength = e.Name.Length
-                })
-                .ToArray();
-            */
-
+            var result = FilterList(list, "Age", age => (int)age >= 18);
+            foreach (var item in result)
+            {
+                var person = item as Person;
+                Console.WriteLine(person.Age);            // Vfr ser inte item.Age??
+            }
+        
             Console.ReadKey();
+
+
+
+
         }
 
-     
+        // Ha det här i GarageHandler klassen
+        private static IList FilterList(IList list, string propName, Predicate<object> filterMethod)
+        {
+            //IVehicle[] result = new IVehicle[10];
+            var result = new List<object>();
+            foreach (var item in list)
+            {
+                var value = item.GetType().GetProperty(propName).GetValue(item);
+                if (filterMethod(value))
+                {
+                    result.Add(item);
+                }
+            }
+            return result;
+
+        }
+
     }
 }

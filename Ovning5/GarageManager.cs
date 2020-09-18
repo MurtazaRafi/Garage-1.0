@@ -70,6 +70,8 @@ namespace Ovning5
             string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui);
             int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
             ui.Print(garageHandler.FindVehicle(color, nrOfWheels));
+
+            garageHandler.PrintResultsFromArray();
             /*string choice = Util.AskForString("Vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
             IVehicle vehicleType = null;
             switch (choice)

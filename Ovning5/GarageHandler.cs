@@ -10,7 +10,7 @@ namespace Ovning5
 {
     public class GarageHandler
     {
-        internal Garage<IVehicle> garage;     //ToDo (ej privat pga kunna köra tester) annars gör till PRIVAT
+        public Garage<IVehicle> garage;     // ej privat pga kunna köra tester
         private int NrOfVehicles { get; set; }
         public GarageHandler(int nrOfVehicles)
         {
@@ -86,10 +86,42 @@ namespace Ovning5
             
         }
 
+        //ToDo fixa Sista funktionaliteten
         internal string FindVehicle(string color, int nrOfWheels)
         {
             var veh = garage.Where(v => v.Color == color).Select(v => v.GetType().Name); //ToDo Fixa så att kan välja
             return veh.ToString();
+        }
+
+        public Garage<IVehicle> FilterList(Garage<IVehicle> array, string propName, Predicate<object> filterMethod)
+        {
+
+            Garage<IVehicle> result = new Garage<IVehicle>(10);
+            //var result = new List<object>();
+            foreach (var item in array)
+            {
+                var value = item.GetType().GetProperty(propName).GetValue(item);
+                if (filterMethod(value))
+                {
+                    result.Add(item);
+                }
+            }
+            
+            return result;
+
+        }
+
+        public void PrintResultsFromArray()
+        {
+           
+            var result = FilterList(garage, "Color", color => (string)color == "Red");
+            foreach (var item in result)
+            {
+                //var vehicle = item as IVehicle;
+                Console.WriteLine(item.Color);            // Vfr ser inte item.Age??
+            }
+
+            Console.ReadKey();
         }
     }
 }

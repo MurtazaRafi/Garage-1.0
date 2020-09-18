@@ -9,9 +9,10 @@ namespace Ovning5
     public class Garage<T> : IEnumerable<T> where T : IVehicle //IGarage<T>,
     {
         private T[] vehicles;
+        public int NrOfVehicles { get; set; }       // Testa om den blir 10 när skapar garage
         public Garage(int nrOfVehicles)
         {
-            vehicles = new T[nrOfVehicles];
+            vehicles = new T[nrOfVehicles];        
         }
         internal T this[int index]
         {
@@ -20,7 +21,7 @@ namespace Ovning5
         }
 
 
-        public IEnumerator<T> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()       //ToDo Testa så att ej null PrintAll()
         {
             foreach (var item in vehicles)
             {
