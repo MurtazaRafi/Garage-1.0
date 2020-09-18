@@ -1,6 +1,6 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Ovning5;
-using Ovning5.Vehicles;    
+using Ovning5.Vehicles;
 
 namespace Garage.Test
 {
@@ -14,15 +14,15 @@ namespace Garage.Test
             int ExpectedNrOfWheels = 4;
             string ExpectedColor = "Red";
             string ExpectedFueltype = "Gasoline";
-            var v = new Car(ExpectedRegNr, ExpectedNrOfWheels, ExpectedColor, ExpectedFueltype);
+            IVehicle ExpectedVehicle = new Car(ExpectedRegNr, ExpectedNrOfWheels, ExpectedColor, ExpectedFueltype);
             GarageHandler garageHandler = new GarageHandler(1);
-            string ExpectedOutput =$"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}";
 
-            Assert.IsTrue(garageHandler.garage.Add(v));
-            garageHandler.garage.Add(v);
+            Assert.IsTrue(garageHandler.garage.Add(ExpectedVehicle));
+
+            garageHandler.garage.Add(ExpectedVehicle);
             var actual = garageHandler.GetVehicleByRegNr(ExpectedRegNr);
-            
-            Assert.AreEqual(ExpectedOutput, actual);
+
+            Assert.AreEqual(ExpectedVehicle, actual);
         }
 
         [TestMethod]
@@ -35,11 +35,13 @@ namespace Garage.Test
             IVehicle airplane = new Airplane(ExpectedRegNr, ExpectedNrOfWheels, ExpectedColor, ExpectedWingSpan);
             GarageHandler garageHandler = new GarageHandler(1);
             garageHandler.Add(airplane);
+            string ExpectedString = "";
 
             Assert.IsTrue(garageHandler.garage.Remove(ExpectedRegNr));
             
-
-
+            var actual = garageHandler.PrintAll();
+            Assert.AreEqual(ExpectedString, actual);
+        
         }
 
     }

@@ -62,24 +62,34 @@ namespace Ovning5
 
         internal bool UniqueRegMr(string regNr)
         {
-            return garage.UniqueRegNr(regNr);
+            for (int i = 0; i < garage.Count(); i++)
+            {
+                if (garage[i]?.RegNr.ToLower() == regNr.ToLower())
+                    return false;
+            }
+            return true;
         }
 
-        internal string GetVehicleByRegNr(string regNr)
+        internal IVehicle GetVehicleByRegNr(string regNr)
         {
-            IVehicle v = garage.GetVehicleByRegNr(regNr);
 
-           
-            string message = "A vehicle with that registration number does not exist in the garage";
-            if(v != null)
-            return $"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}";
+            for (int i = 0; i < garage.Count(); i++)
+            {
+                if (garage[i]?.RegNr.ToLower() == regNr.ToLower())
+                {
+                    return garage[i];
+                }
+            }
 
-            return message;
+            return null;
+
+            
         }
 
         internal string FindVehicle(string color, int nrOfWheels)
         {
-            return garage.FindVehicles(color, nrOfWheels);
+            var veh = garage.Where(v => v.Color == color).Select(v => v.GetType().Name); //ToDo Fixa så att kan välja
+            return veh.ToString();
         }
     }
 }

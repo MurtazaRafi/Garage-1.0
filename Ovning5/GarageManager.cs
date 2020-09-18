@@ -5,7 +5,7 @@ using Ovning5.Vehicles;
 
 namespace Ovning5
 {
-    public class GarageManager 
+    public class GarageManager
     {
         UI ui = new UI();   // Gör om till UI till IUI
         private static int nrOfVehicles;
@@ -53,7 +53,7 @@ namespace Ovning5
                         break;
                     case "7":
                         FindVehicle();
-                            break;
+                        break;
                     case "Q":
                         Environment.Exit(0);
                         break;
@@ -67,7 +67,7 @@ namespace Ovning5
 
         private void FindVehicle()
         {
-            string color = Util.AskForAlphabets("What color does the vehicle you want have?" , ui);
+            string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui);
             int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
             ui.Print(garageHandler.FindVehicle(color, nrOfWheels));
             /*string choice = Util.AskForString("Vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
@@ -87,13 +87,22 @@ namespace Ovning5
         private void FindVehicleWithRegNr()
         {
             string regNr = Util.AskForString("Registration number: ", ui);
-            ui.Print(garageHandler.GetVehicleByRegNr(regNr));
+
+            IVehicle v = garageHandler.GetVehicleByRegNr(regNr);
+
+            if (v != null)
+                ui.Print($"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}");
+            else
+                ui.Print("A vehicle with that registration number does not exist in the garage");
             ui.Print("");
         }
 
         private void PrintAll()
         {
-            ui.Print(garageHandler.PrintAll());
+            if (string.IsNullOrEmpty(garageHandler.PrintAll()))
+                ui.Print("There are no vehicles in the garage");
+            else
+                ui.Print(garageHandler.PrintAll());
             ui.Print("");
         }
 
@@ -103,7 +112,8 @@ namespace Ovning5
             string regNr = Util.AskForString("Give the registration number of the vehicle you want to pick up", ui);
             if (garageHandler.Remove(regNr))
                 ui.Print($"The vehicle with registration nr: {regNr} was picked up");
-            ui.Print($"A vehicle with registration nr: {regNr} is not parked in the garage");
+            else
+                ui.Print($"A vehicle with registration nr: {regNr} is not parked in the garage");
 
             ui.Print("");
         }
@@ -132,11 +142,11 @@ namespace Ovning5
             double length;
             double cylinderVolume;
             double wingSpan;
+
             IVehicle vehicle = null;
             switch (vehicleType)
             {
                 case "1":
-
                     do
                     {
                         string input1 = Util.AskForString("Enter fueltype for the car \n1. Gasoline \n2. Diesel", ui);
@@ -162,7 +172,7 @@ namespace Ovning5
                     break;
                 case "3":
                     length = Util.AskForPositiveDouble("Enter the length of the boat", ui);
-                    IVehicle boat = new Boat(regNr, nrOfWheels, color, length);
+                    vehicle = new Boat(regNr, nrOfWheels, color, length);
                     break;
                 case "4":
                     cylinderVolume = Util.AskForPositiveDouble("Enter the cylinder volume of the motorcycle", ui);
@@ -177,6 +187,7 @@ namespace Ovning5
                     break;
             }
 
+            // The veicle is added inside the if
             if (garageHandler.Add(vehicle))
                 ui.Print($"The {vehicle.GetType().Name} was parked successfully");
             else

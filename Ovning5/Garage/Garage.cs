@@ -35,7 +35,6 @@ namespace Ovning5
         }
 
 
-        // ??
         public bool Add(T vehicle)
         {
 
@@ -56,16 +55,6 @@ namespace Ovning5
             return success;
         }
 
-        internal bool UniqueRegNr(string regNr)
-        {
-            for (int i = 0; i < vehicles.Length; i++)
-            {
-                if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
-                    return false;
-            }
-            return true;
-        }
-
         //public bool Remove(T vehicle)
         public bool Remove(string regNr)
         {
@@ -82,24 +71,5 @@ namespace Ovning5
             return succcess;
         }
 
-        internal string FindVehicles(string color, int nrOfWheels)
-        {
-            var veh = vehicles.Where(v => v.Color == color).Select(v => v.GetType().Name); //ToDo Fixa så att kan välja
-            return veh.ToString();
-        }
-
-        internal T GetVehicleByRegNr(string regNr)
-        {
-
-            for (int i = 0; i < vehicles.Length; i++)
-            {
-                if (vehicles[i]?.RegNr.ToLower() == regNr.ToLower())
-                {
-                    return vehicles[i];
-                }
-            }
-
-            return default(T);
-        }
-    }
+      }
 }
