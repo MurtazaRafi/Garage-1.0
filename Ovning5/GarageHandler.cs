@@ -6,12 +6,11 @@ using System.Text;
 using Ovning5.Vehicles;
 
 [assembly: InternalsVisibleTo("Garage.Test")]
-//ToDo fixa så att refererar
 namespace Ovning5
 {
     public class GarageHandler
     {
-        public Garage<IVehicle> garage;     //ToDo Fråga om kan ha public pga test
+        internal Garage<IVehicle> garage;     //ToDo (ej privat pga kunna köra tester) annars gör till PRIVAT
         private int NrOfVehicles { get; set; }
         public GarageHandler(int nrOfVehicles)
         {
@@ -63,6 +62,11 @@ namespace Ovning5
             return $"Vehicle type: {v.GetType().Name} Regnr: {v.RegNr} Number of wheels {v.NrOfWheels} Color {v.Color}";
 
             return message;
+        }
+
+        internal string FindVehicle(string color, int nrOfWheels)
+        {
+            return garage.FindVehicles(color, nrOfWheels);
         }
     }
 }

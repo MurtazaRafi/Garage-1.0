@@ -5,7 +5,7 @@ using Ovning5.Vehicles;
 
 namespace Ovning5
 {
-    public class GarageManager
+    public class GarageManager 
     {
         UI ui = new UI();   // Gör om till UI till IUI
         private static int nrOfVehicles;
@@ -23,20 +23,21 @@ namespace Ovning5
 
             do
             {
-            ui.Print("1. Populate the garage with som vehicles " +
-                "\n2. Print all vehicles in the garage " +
-                "\n3. Print vehicle types and how many of each there are in the garage" +
-                "\n4. Park a vehicle " +
-                "\n5. Pick up a vehicle" +
-                "\n6. Get information about the vehicle by giving the registration number" +
-                "\nQ. Quit application");
+                ui.Print("1. Populate the garage with som vehicles " +
+                    "\n2. Print all vehicles in the garage " +
+                    "\n3. Print vehicle types and how many of each there are in the garage" +
+                    "\n4. Park a vehicle " +
+                    "\n5. Pick up a vehicle" +
+                    "\n6. Get information about the vehicle by giving the registration number" +
+                    "\n7. Get a group of vehicles with certain attributes" +
+                    "\nQ. Quit application");
                 switch (ui.GetInput())
                 {
                     case "1":
                         SeedData();
                         break;
                     case "2":
-                        PrintAll(); 
+                        PrintAll();
                         break;
                     case "3":
                         PrintVehicleTypes();
@@ -48,8 +49,11 @@ namespace Ovning5
                         PickUp();
                         break;
                     case "6":
-                        FindVehicle();
+                        FindVehicleWithRegNr();
                         break;
+                    case "7":
+                        FindVehicle();
+                            break;
                     case "Q":
                         Environment.Exit(0);
                         break;
@@ -62,6 +66,25 @@ namespace Ovning5
         }
 
         private void FindVehicle()
+        {
+            string color = Util.AskForAlphabets("What color does the vehicle you want have?" , ui);
+            int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
+            ui.Print(garageHandler.FindVehicle(color, nrOfWheels));
+            /*string choice = Util.AskForString("Vehicle type: \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
+            IVehicle vehicleType = null;
+            switch (choice)
+            {
+                case 1:
+                    vehicleType = new Car();
+                    break;
+                default:
+                    break;
+            }
+            */
+
+        }
+
+        private void FindVehicleWithRegNr()
         {
             string regNr = Util.AskForString("Registration number: ", ui);
             ui.Print(garageHandler.GetVehicleByRegNr(regNr));
@@ -79,8 +102,8 @@ namespace Ovning5
 
             string regNr = Util.AskForString("Give the registration number of the vehicle you want to pick up", ui);
             if (garageHandler.Remove(regNr))
-                ui.Print($"The vehicle with registration nr: {regNr} was picked up");      
-                ui.Print($"A vehicle with registration nr: {regNr} is not parked in the garage");
+                ui.Print($"The vehicle with registration nr: {regNr} was picked up");
+            ui.Print($"A vehicle with registration nr: {regNr} is not parked in the garage");
 
             ui.Print("");
         }
@@ -96,14 +119,14 @@ namespace Ovning5
             ui.Print("Enter which type of vehicle you want to park \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
             string vehicleType = ui.GetInput();
             ui.Print("Enter the three required vehicle data");
-            
+
             string regNr;
             regNr = Util.AskForString("Registration number: ", ui);
             while (!garageHandler.UniqueRegMr(regNr))
                 regNr = Util.AskForString("A vehicle with that registration number is already parked in the garage. Give new registration number", ui);
 
             int nrOfWheels = Util.AskForPositiveInt("Number of wheels: ", ui);
-            string color = Util.AskForAlphabets("Color: ", ui);       
+            string color = Util.AskForAlphabets("Color: ", ui);
             string fuelType;
             int nrOfSeats;
             double length;
@@ -154,10 +177,10 @@ namespace Ovning5
                     break;
             }
 
-           if (garageHandler.Add(vehicle))
-               ui.Print($"The {vehicle.GetType().Name} was parked successfully");
-           else
-               ui.Print($"The {vehicle.GetType().Name} could not be parked. The garage is full");
+            if (garageHandler.Add(vehicle))
+                ui.Print($"The {vehicle.GetType().Name} was parked successfully");
+            else
+                ui.Print($"The {vehicle.GetType().Name} could not be parked. The garage is full");
 
             ui.Print("");
 
