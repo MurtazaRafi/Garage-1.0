@@ -21,7 +21,7 @@ namespace Ovning5
             garage = new Garage<IVehicle>(NrOfVehicles);
         }
 
-        
+
         public string PrintAll()
         {
             var builder = new StringBuilder();
@@ -86,14 +86,14 @@ namespace Ovning5
 
             return null;
 
-            
+
         }
 
-       
+
         public string FilterArray(string vehicleType, string color, int nrOfWheels)
         {
             StringBuilder builder = new StringBuilder();
-            var resultat = garage.Where(v=> v.GetType().Name.ToLower() == vehicleType)
+            var resultat = garage.Where(v => v.GetType().Name.ToLower() == vehicleType)
                 .Where(v => v.Color.ToLower() == color)
                 .Where(v => v.NrOfWheels == nrOfWheels);
             foreach (var item in resultat)
@@ -101,7 +101,7 @@ namespace Ovning5
                 builder.AppendLine($"Vehicle type: {item.GetType().Name} Ristration Number: {item.RegNr} " +
                     $"Color: {item.Color} Number of wheels: {item.NrOfWheels}");
             }
-            return builder.ToString();
+            //return builder.ToString();
 
             //string vehicleType = "Bus";
             //string colorInput = "Red";
@@ -113,7 +113,7 @@ namespace Ovning5
             //    object value = null ;
             //    object value2 = null;
 
-             //ToDo Klura ut så att ej behöver skriva 6 olika varjanter av if om kör denna metod
+            //ToDo Klura ut så att ej behöver skriva 6 olika varjanter av if om kör denna metod
             //    value = item.GetType().GetProperty("Color").GetValue(item);
             //    value2 = item.GetType().GetProperty("NrOfWheels").GetValue(item);
 
@@ -124,24 +124,74 @@ namespace Ovning5
             //    else if (filterMethod(value) && filterMethod2(value2))
             //        result.Add(item);
             //}
-            
+
             //return result;
 
+
+
+            //public void PrintResultsFromArray(string colorInput)
+            //{
+
+            //    var result = FilterArray();
+
+            //    if (result[0] == null)
+            //        Console.WriteLine("Empty");         //ToDo ta bort console.writeline
+            //    else
+            //    {
+            //        foreach (var item in result)
+            //            Console.WriteLine($"{item.GetType().Name} {item.Color}");
+
+            //    }
+            //}
+
+            return builder.ToString();
         }
+        public List<IVehicle> FindVehiclesByPropertyValues(List<(string, string)> propValuePairs, string vehicleType)
+        {
+            //The vehicles that contain all the properties and it values from the propValuePairs
+            List<IVehicle> result = new List<IVehicle>();
 
-        //public void PrintResultsFromArray(string colorInput)
-        //{
-           
-        //    var result = FilterArray();
 
-        //    if (result[0] == null)
-        //        Console.WriteLine("Empty");         //ToDo ta bort console.writeline
-        //    else
-        //    {
-        //        foreach (var item in result)
-        //            Console.WriteLine($"{item.GetType().Name} {item.Color}");
 
-        //    }
-        //}
+
+            foreach (var vehicle in garage.Where(v => v != null))
+            {
+                //Retrieves the names of the properties in the vehicle.
+                string[] propertiesInVehicle = vehicle.GetType().GetProperties().Select(pi => pi.Name).ToArray();
+
+
+
+                //Checks that all the properties in the propValuePairs exists in the vehicle properties
+                bool allIncluded = propValuePairs.Select(pvp => pvp.Item1).All(propertiesInVehicle.Contains);
+
+
+
+                //If the vehicle contains all the properties
+                if (allIncluded)
+                {
+                    //Checks that all the properties and their values are equal to the ones in the vehicle.
+
+                    bool sameValues = propValuePairs.All((pvp) => // vad gör den här raden? var definerar pvp?
+                    {
+                        var value = vehicle.GetType().GetProperty(pvp.Item1).GetValue(vehicle);
+                        return value.ToString().ToLower().Equals(pvp.Item2.ToLower());
+                    });
+                    //If the vehicle is a match then it is added to the result list.
+                    if (vehicleType == "none" && sameValues)
+                        result.Add(vehicle);
+
+                    if (vehicle.GetType().Name == vehicleType && sameValues)
+                        result.Add(vehicle);
+
+                }
+            }
+
+
+            foreach (var v in result)
+            {
+                Console.WriteLine(v.RegNr);
+            }
+            return result;
+        }
     }
 }

@@ -52,7 +52,8 @@ namespace Ovning5
                         FindVehicleWithRegNr();
                         break;
                     case "7":
-                        FindVehicle();
+                         FindVehicle();
+                        
                         break;
                     case "Q":
                         Environment.Exit(0);
@@ -99,14 +100,34 @@ namespace Ovning5
                         ui.Print("Wrong choice!");
                         break;
                 }
-            } while (choice<1 || choice>6);
+            } while (choice < 1 || choice > 6);
 
             //ToDo fixa så att har två val om 1 vet color eller 2 ej
-            string color = Util.AskForAlphabets("What color does the vehicle you want have?", ui).Trim().ToLower();
+            do
+            {
+                choice = Util.AskForPositiveInt("Do you know the color of your vehicle \n1. Yes \n2. No",ui);
+            } while (choice<1 || choice>2);
+            string color = "none";
+            if (choice == 1)
+            color= Util.AskForAlphabets("What color does the vehicle you want have?", ui).Trim().ToLower();
             //fixa så att har två 1. 2. val om vet antal hjul eller ej
+            do
+            {
+                choice = Util.AskForPositiveInt("Do you know how many wheels your vehicle have \n1. Yes \n2. No", ui);
+            } while (choice < 1 || choice > 2);
+            int nrOfWheels = -1;
+            if (choice == 1)
+             nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
+            //ui.Print(garageHandler.FilterArray(vehicleType, color, nrOfWheels));
 
-            int nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
-            ui.Print(garageHandler.FilterArray(vehicleType, color, nrOfWheels));
+            var tupleList = new List<(string, string)>();
+            if (color != "none")
+                tupleList.Add(("Color", color));
+            if (nrOfWheels != -1)
+                tupleList.Add(("NrOfWheels", nrOfWheels.ToString()));
+            
+            garageHandler.FindVehiclesByPropertyValues(tupleList, vehicleType);
+
 
         }
 
@@ -225,11 +246,11 @@ namespace Ovning5
 
         public void SeedData()
         {
-            Car car = new Car("abc123", 4, "Blue", "Diesel");
+            Car car = new Car("abc123", 4, "Red", "Diesel");
             garageHandler.Add(car);
             Car car2 = new Car("sdf334", 4, "Red", "Gasoline");
             garageHandler.Add(car2);
-            Vehicle bus = new Bus("cbe321", 8, "Red", 12);
+            Vehicle bus = new Bus("cbe321", 4, "Red", 12);
             garageHandler.Add(bus);
             Boat boat = new Boat("AB12", 0, "Brown", 7.5);
             garageHandler.Add(boat);
