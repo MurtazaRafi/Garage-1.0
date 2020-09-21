@@ -181,7 +181,7 @@ namespace Ovning5
 
             string regNr;
             regNr = Util.AskForString("Registration number: ", ui);
-            while (!garageHandler.UniqueRegMr(regNr))
+            while (!garageHandler.UniqueRegNr(regNr))
                 regNr = Util.AskForString("A vehicle with that registration number is already parked in the garage. Give new registration number", ui);
 
             int nrOfWheels = Util.AskForPositiveInt("Number of wheels: ", ui);

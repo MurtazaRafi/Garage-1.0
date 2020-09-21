@@ -60,7 +60,7 @@ namespace Ovning5
         }
 
 
-        internal bool UniqueRegMr(string regNr)
+        internal bool UniqueRegNr(string regNr)
         {
             for (int i = 0; i < garage.Count(); i++)
             {
