@@ -50,10 +50,10 @@ namespace Garage.Test
         {
             int ExpectedNrOfVehicles = 5;
 
-            GarageHandler garageHandler = new GarageHandler(5);
+            IGarage<IVehicle> garage = new Garage<IVehicle>(5);
 
-            Assert.AreEqual(ExpectedNrOfVehicles, garageHandler.garage.NrOfVehicles);
-            // Vfr ger fel?
+            Assert.AreEqual(ExpectedNrOfVehicles, garage.NrOfVehicles);
+           
         }
 
         [TestMethod]
