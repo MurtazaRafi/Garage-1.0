@@ -4,18 +4,18 @@ using System.Text;
 
 namespace Ovning5
 {
-    class UI
+    public class UI : IUI
     {
-        internal void Print(string message)
+        public void Print(string message)
         {
             Console.WriteLine(message);
         }
 
-        internal string GetInput()
+        public string GetInput()
         {
             return Console.ReadLine();
         }
 
-        
+
     }
 }

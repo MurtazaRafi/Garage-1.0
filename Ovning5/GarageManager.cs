@@ -5,9 +5,9 @@ using Ovning5.Vehicles;
 
 namespace Ovning5
 {
-    public class GarageManager
+    public class GarageManager : IManager
     {
-        UI ui = new UI();   // Gör om till UI till IUI
+        IUI ui = new UI();
         private static int nrOfVehicles;
         GarageHandler garageHandler;
 
@@ -52,8 +52,8 @@ namespace Ovning5
                         FindVehicleWithRegNr();
                         break;
                     case "7":
-                         FindVehicle();
-                        
+                        FindVehicle();
+
                         break;
                     case "Q":
                         Environment.Exit(0);
@@ -102,31 +102,29 @@ namespace Ovning5
                 }
             } while (choice < 1 || choice > 6);
 
-            //ToDo fixa så att har två val om 1 vet color eller 2 ej
             do
             {
-                choice = Util.AskForPositiveInt("Do you know the color of your vehicle \n1. Yes \n2. No",ui);
-            } while (choice<1 || choice>2);
+                choice = Util.AskForPositiveInt("Do you know the color of your vehicle \n1. Yes \n2. No", ui);
+            } while (choice < 1 || choice > 2);
             string color = "none";
             if (choice == 1)
-            color= Util.AskForAlphabets("What color does the vehicle you want have?", ui).Trim().ToLower();
-            //fixa så att har två 1. 2. val om vet antal hjul eller ej
+                color = Util.AskForAlphabets("What color does the vehicle you want have?", ui).Trim().ToLower();
+
             do
             {
                 choice = Util.AskForPositiveInt("Do you know how many wheels your vehicle have \n1. Yes \n2. No", ui);
             } while (choice < 1 || choice > 2);
             int nrOfWheels = -1;
             if (choice == 1)
-             nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
-            //ui.Print(garageHandler.FilterArray(vehicleType, color, nrOfWheels));
+                nrOfWheels = Util.AskForPositiveInt("How many wheels does the you are seeking have?: ", ui);
 
             var tupleList = new List<(string, string)>();
             if (color != "none")
                 tupleList.Add(("Color", color));
             if (nrOfWheels != -1)
                 tupleList.Add(("NrOfWheels", nrOfWheels.ToString()));
-            
-            garageHandler.FindVehiclesByPropertyValues(tupleList, vehicleType);
+
+            ui.Print(garageHandler.FindVehiclesByPropertyValues(tupleList, vehicleType));
 
 
         }
@@ -173,8 +171,12 @@ namespace Ovning5
 
         private void Park()
         {
-            ui.Print("Enter which type of vehicle you want to park \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane");
-            string vehicleType = ui.GetInput();
+            int vehicleType;
+            do
+            {
+                vehicleType = Util.AskForPositiveInt("Enter which type of vehicle you want to park \n1. Car \n2. Bus \n3. Boat \n4. Motorcycle \n5. Airplane", ui);
+            } while (vehicleType < 1 || vehicleType > 5);
+
             ui.Print("Enter the three required vehicle data");
 
             string regNr;
@@ -193,7 +195,7 @@ namespace Ovning5
             IVehicle vehicle = null;
             switch (vehicleType)
             {
-                case "1":
+                case 1:
                     do
                     {
                         string input1 = Util.AskForString("Enter fueltype for the car \n1. Gasoline \n2. Diesel", ui);
@@ -213,24 +215,24 @@ namespace Ovning5
                     } while (true);
                     vehicle = new Car(regNr, nrOfWheels, color, fuelType);
                     break;
-                case "2":
+                case 2:
                     nrOfSeats = Util.AskForPositiveInt("Enter how many seats the bus have", ui);
                     vehicle = new Bus(regNr, nrOfWheels, color, nrOfSeats);
                     break;
-                case "3":
+                case 3:
                     length = Util.AskForPositiveDouble("Enter the length of the boat", ui);
                     vehicle = new Boat(regNr, nrOfWheels, color, length);
                     break;
-                case "4":
+                case 4:
                     cylinderVolume = Util.AskForPositiveDouble("Enter the cylinder volume of the motorcycle", ui);
                     vehicle = new Motorcycle(regNr, nrOfWheels, color, cylinderVolume);
                     break;
-                case "5":
+                case 5:
                     wingSpan = Util.AskForPositiveDouble("Enter the wing span of the airplane", ui);
                     vehicle = new Airplane(regNr, nrOfWheels, color, wingSpan);
                     break;
                 default:
-                    Console.WriteLine("Wrong choice, try again");
+                    ui.Print("Wrong choice, try again");
                     break;
             }
 

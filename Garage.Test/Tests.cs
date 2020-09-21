@@ -8,7 +8,8 @@ namespace Garage.Test
     public class Tests
     {
         [TestMethod]
-        public void AddCar_Should_AddToTheArray()
+        // namnetPåMetodenDuTestar_VadSomTestas_VadSomBörHända
+        public void AddVehicle_WithExistingRegNo_ShouldBeAdded()
         {
             string ExpectedRegNr = "ABc124";
             int ExpectedNrOfWheels = 4;
@@ -26,7 +27,7 @@ namespace Garage.Test
         }
 
         [TestMethod]
-        public void RemoveVehicle_Should_RemoveFromArray()
+        public void RemoveVehicle_WithExistingRegNo_ShouldBeRemoved()
         {
             string ExpectedRegNr = "DC34b";
             int ExpectedNrOfWheels = 3;
@@ -42,6 +43,25 @@ namespace Garage.Test
             var actual = garageHandler.PrintAll();
             Assert.AreEqual(ExpectedString, actual);
         
+        }
+
+        [TestMethod]
+        public void SetNrOfVehicles_NrOfVehiclesInGarage_ShouldSet()
+        {
+            int ExpectedNrOfVehicles = 5;
+
+            GarageHandler garageHandler = new GarageHandler(5);
+
+            Assert.AreEqual(ExpectedNrOfVehicles, garageHandler.garage.NrOfVehicles);
+            // Vfr ger fel?
+        }
+
+        [TestMethod]
+        public void GetEnumerator_NullCheck_ShouldNotReturnNull()
+        {
+            GarageHandler garageHandler = new GarageHandler(10);
+
+            Assert.IsNotNull(garageHandler.PrintAll());
         }
 
     }

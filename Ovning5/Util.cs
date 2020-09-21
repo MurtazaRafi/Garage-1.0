@@ -7,15 +7,15 @@ namespace Ovning5
 {
     internal static class Util
     {
-        internal static string AskForString(string prompt, UI ui) //ToDo Gör om UI till IUI 
-            //?? VArför apsserar ui i askforstring??
+        internal static string AskForString(string prompt, IUI ui) 
+          
         {
             bool success = false;
             string answer; 
 
             do 
             {
-                ui.Print(prompt);           //?? För att kunna använda här ??
+                ui.Print(prompt);         
                 answer = ui.GetInput();
 
                 if (!string.IsNullOrEmpty(answer))
@@ -30,7 +30,7 @@ namespace Ovning5
 
       
 
-        internal static string AskForAlphabets(string prompt, UI ui) 
+        internal static string AskForAlphabets(string prompt, IUI ui) 
         {
             bool success = false;
             string answer;
@@ -51,7 +51,7 @@ namespace Ovning5
             return answer; 
         }
 
-        internal static int AskForPositiveInt(string prompt, UI ui) 
+        internal static int AskForPositiveInt(string prompt, IUI ui) 
         {
             bool success = false;
             int answer;
@@ -70,7 +70,7 @@ namespace Ovning5
             return answer;
         }
 
-        internal static double AskForPositiveDouble(string prompt, UI ui)
+        internal static double AskForPositiveDouble(string prompt, IUI ui)
         {
             bool success = false;
             double answer;

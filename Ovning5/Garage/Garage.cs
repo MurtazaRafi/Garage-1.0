@@ -6,13 +6,13 @@ using System.Text;
 
 namespace Ovning5
 {
-    public class Garage<T> : IEnumerable<T> where T : IVehicle //IGarage<T>,
+    public class Garage<T> : IEnumerable<T>, IGarage<T> where T : IVehicle 
     {
         private T[] vehicles;
         public int NrOfVehicles { get; set; }       //ToDo Testa om den blir 10 när skapar garage
         public Garage(int nrOfVehicles)
         {
-            vehicles = new T[nrOfVehicles];        
+            vehicles = new T[nrOfVehicles];
         }
         internal T this[int index]
         {
@@ -72,5 +72,5 @@ namespace Ovning5
             return succcess;
         }
 
-      }
+    }
 }
