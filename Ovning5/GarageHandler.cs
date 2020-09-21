@@ -47,7 +47,6 @@ namespace Ovning5
             return builder.ToString();
         }
 
-        // Kallar i två svep för att garage är private (incapsualtion)
         internal bool Add(IVehicle vehicle)
         {
             return garage.Add(vehicle);

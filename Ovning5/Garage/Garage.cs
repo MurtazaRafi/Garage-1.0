@@ -9,7 +9,7 @@ namespace Ovning5
     public class Garage<T> : IEnumerable<T>, IGarage<T> where T : IVehicle 
     {
         private T[] vehicles;
-        public int NrOfVehicles { get; set; }       //ToDo Testa om den blir 5 när skapar garage
+        public int NrOfVehicles { get; set; }     
         public Garage(int nrOfVehicles)
         {
             NrOfVehicles = nrOfVehicles;
